@@ -14,17 +14,6 @@ app = proc do |env|
       custom_params[CGI::unescape(values[0])] = CGI::unescape(values[1])
     end
     
-    headers = Rack::Utils::HeaderHash.new
-    env.each do |key, value|
-      if key =~ /HTTP_(.*)/
-        headers[$1] = value
-      end
-    end
-    
-    puts "#{custom_params['host']}, #{request.fullpath}"
-    
-    result = ""
-    
     response = Net::HTTP.start(custom_params['host'], custom_params['port'] || 80) {|http|
       forward_request = Net::HTTP::Post.new(request.fullpath)
       forward_request.body_stream = request.body
@@ -33,8 +22,6 @@ app = proc do |env|
       
       result = http.request(forward_request)
     }
-    
-    puts result.inspect
     
     return [200, { "Content-Type" => "text/html" }, "OK"]
   end
