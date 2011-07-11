@@ -27,6 +27,8 @@ app = proc do |env|
       forward_request.content_type = request.content_type
       forward_request.content_length = request.content_length
       
+      puts "#{custom_params['host']}, #{request.fullpath}"
+      
       http.request(forward_request)
     end
     
