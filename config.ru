@@ -21,13 +21,13 @@ app = proc do |env|
       end
     end
     
+    puts "#{custom_params['host']}, #{request.fullpath}"
+    
     response = Net::HTTP.start(custom_params['host'], custom_params['port'] || 80) do |http|
       forward_request = Net::HTTP::Post.new(request.fullpath, headers)
       forward_request.body_stream = request.body
       forward_request.content_type = request.content_type
       forward_request.content_length = request.content_length
-      
-      puts "#{custom_params['host']}, #{request.fullpath}"
       
       http.request(forward_request)
     end
