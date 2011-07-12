@@ -16,6 +16,12 @@ To get started, log in to your Paypal account, navigate to profile and change yo
 
     http://fast-forward.heroku.com
 
+Any POST request sent to Fast Forward is replicated at the full path of the request, so if you aren't accepting IPNs on your home page, you can do something like this:
+
+    http://fast-forward.heroku.com/payment_notifications
+
+Thus, any IPN sent to Fast Forward will also be sent to /payment_notifications on your local set up.
+
 ## Step 2: Set up your local machine with a dynamic DNS service
 
 The instructions for doing so are beyond the scope of this readme, but do take a look at these services:
@@ -24,11 +30,11 @@ The instructions for doing so are beyond the scope of this readme, but do take a
 * http://www.no-ip.com/
 * http://showoff.io/
 
-Make sure you have your dynamic hostname on hand for the next step.
+I have only tested Fast Forward with Dyndns and Showoff, but it should work with similar services fine. Make sure you have your dynamic hostname on hand for the next step.
 
 ## Step 3: Configure your app to send your machine's dynamic hostname
 
-In your app, simply pass in a hostname (port is optional) as a name-value pair in your custom field format like so:
+I assume that you are using http://fast-forward.heroku.com for this step. To get Fast Forward to forward requests to your local app, pass in a hostname (port is optional) as a name-value pair in your custom field format like so:
 
     values = {
       # ...
@@ -39,3 +45,14 @@ In your app, simply pass in a hostname (port is optional) as a name-value pair i
 This example is in [Ruby] (http://www.ruby-lang.org/en/), and follows [Ryan Bate's screencast on Instant Payment Notification] (http://railscasts.com/episodes/142-paypal-notifications). However, Fast Forward will work with any system capable of receiving POST data.
 
 And you're set; now whenever Paypal receives a command that triggers an IPN, it will first be sent to the Fast Forward rack app, then forwarded to the host specified in your app.
+
+Alternatively, you may want to set up Fast Forward locally, configure Paypal to send IPNs to your local machine (on the dynamic hostname), and specify local host/port in the custom field.
+
+# Future
+
+* This app is a result of a spike (I didn't know it would even work) and thus there are no specs.
+* alternative methods of specifying host/port
+* cache IPN requests for inspection (using GET requests) in a developer console
+* add support for basic authentication
+
+Feel free to submit any suggestions to the [issue tracker] (https://github.com/tinkerbox/fast-forward/issues).
