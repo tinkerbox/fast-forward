@@ -9,9 +9,8 @@ app = proc do |env|
     custom_params = {}
     
     request.params["custom"].split(',').each do |pair|
-      pair.strip!
       values = pair.split(':')
-      custom_params[CGI::unescape(values[0])] = CGI::unescape(values[1])
+      custom_params[CGI::unescape(values[0].strip)] = CGI::unescape(values[1].strip)
     end
     
     response = Net::HTTP.start(custom_params['host'], custom_params['port'] || 80) {|http|
