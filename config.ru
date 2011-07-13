@@ -15,6 +15,11 @@ app = proc do |env|
     
     response = Net::HTTP.start(custom_params['host'], custom_params['port'] || 80) {|http|
       forward_request = Net::HTTP::Post.new(request.fullpath)
+      
+      if custom_params['user'] && custom_params['password']
+        forward_request.basic_auth custom_params['user'], custom_params['password']
+      end
+      
       forward_request.body_stream = request.body
       forward_request.content_type = request.content_type
       forward_request.content_length = request.content_length
