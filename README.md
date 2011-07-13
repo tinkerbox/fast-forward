@@ -22,7 +22,7 @@ Any POST request sent to Fast Forward is replicated at the full path of the requ
 
     http://fast-forward.heroku.com/payment_notifications
 
-Thus, any IPN sent to Fast Forward will also be sent to /payment_notifications on your local set up.
+Thus, any IPN sent to Fast Forward will also be sent to /payment_notifications on your local set up. You can override 
 
 ## Step 2: Set up your local machine with a dynamic DNS service
 
@@ -40,11 +40,11 @@ I assume that you are using http://fast-forward.heroku.com for this step. To get
 
     values = {
       # ...
-      :custom => "host:http%3A%2F%2Fexample.com, port:80" # data is URL encoded
+      :custom => "http://user:password@example.com:3000"
       # ...
     }
 
-This example is in [Ruby] (http://www.ruby-lang.org/en/), and follows [Ryan Bate's screencast on Instant Payment Notification] (http://railscasts.com/episodes/142-paypal-notifications). However, Fast Forward will work with any system capable of receiving POST data.
+Fast Forward accepts a standard URL and provides support for basic authentication as per the example. This example is in [Ruby] (http://www.ruby-lang.org/en/), and follows [Ryan Bate's screencast on Instant Payment Notification] (http://railscasts.com/episodes/142-paypal-notifications). However, Fast Forward will work with any system capable of receiving POST data.
 
 And you're set; now whenever Paypal receives a command that triggers an IPN, it will first be sent to the Fast Forward rack app, then forwarded to the host specified in your app.
 
@@ -55,6 +55,5 @@ Alternatively, you may want to set up Fast Forward locally, configure Paypal to 
 * This app is a result of a spike (I didn't know it would even work) and thus there are no specs.
 * alternative methods of specifying host/port
 * cache IPN requests for inspection (using GET requests) in a developer console
-* add support for basic authentication
 
 Feel free to submit any suggestions to the [issue tracker] (https://github.com/tinkerbox/fast-forward/issues).
