@@ -1,12 +1,12 @@
 require 'net/http'
-require 'cgi'
+require 'uri'
 
 app = proc do |env|
   request = Rack::Request.new(env)
   
   if request.post?
     
-    url = Url.parse(request.params["custom"])
+    url = URI.parse(request.params["custom"])
     
     if url.path  == "/"
       path = request.fullpath # use request path is custom url does provide a path
