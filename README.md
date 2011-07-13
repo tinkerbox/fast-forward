@@ -6,6 +6,8 @@ If you have a staging server for your web app, you will have Paypal send request
 
 While your team might get away with setting up each developer with an individual Paypal Sandbox account, you're gonna have trouble keeping them in sync when you want to make changes to the account's configuration.
 
+One other way is to set the notify_url variable in each Paypal command, test your site on a dynamic hostname that forwards requests to your local machine. That works fine if you are hosting your web app on port 80.
+
 # How does Fast Forward work?
 
 Fast Forward runs as a simple rack app that forwards IPNs to a target hostname retrieved from the custom variable that is passed via Paypal commands. If you are already using the custom field for some other purpose, Fast Forward will likely not work for you at the moment.
